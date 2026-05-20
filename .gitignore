@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Data files (too large for Git, stored locally only)
+data/airports.csv
+data/airlines.dat
+data/routes.dat
+data/airports.json
+data/airlines.json
+data/routes.json
