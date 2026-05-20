@@ -1,6 +1,6 @@
-import airports from "../data/airports.json";
-import airlines from "../data/airlines.json";
-import routes from "../data/routes.json";
+import airports from "./data/airports.json";
+import airlines from "./data/airlines.json";
+import routes from "./data/routes.json";
 
 export default function Home() {
   const featuredAirports = ["JFK", "LHR", "DXB", "HND", "SIN", "LAX"]
