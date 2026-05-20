@@ -1,65 +1,181 @@
-import Image from "next/image";
+import airports from "../data/airports.json";
+import airlines from "../data/airlines.json";
+import routes from "../data/routes.json";
 
 export default function Home() {
+  const featuredAirports = ["JFK", "LHR", "DXB", "HND", "SIN", "LAX"]
+    .map((code) => airports.find((a) => a.iata === code))
+    .filter(Boolean);
+
+  const featuredAirlines = ["EK", "SQ", "QR", "AA", "BA", "LH"]
+    .map((code) => airlines.find((a) => a.iata === code))
+    .filter(Boolean);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+    <main className="min-h-screen bg-black text-white">
+      {/* TOP BAR */}
+      <nav className="border-b border-white/10 px-6 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-orange-500 text-2xl">✈</span>
+          <span className="font-bold tracking-widest text-lg">AEROHUB</span>
+        </div>
+        <div className="text-xs font-mono text-white/40 tracking-wider hidden md:block">
+          AVGEEK CENTRAL · EST. 2026
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        {/* Subtle orange glow in the corner */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+        <div className="relative max-w-6xl mx-auto px-6 py-24 md:py-32">
+          <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-6">
+            — DEPARTURES BOARD
+          </p>
+          <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.95] mb-8">
+            Every airport.
+            <br />
+            Every airline.
+            <br />
+            <span className="italic text-orange-500">One hub.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-white/60 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
+            Routes, fleets, and stats for the avgeek in all of us. Browse{" "}
+            <span className="text-white font-mono">
+              {airports.length.toLocaleString()}
+            </span>{" "}
+            airports,{" "}
+            <span className="text-white font-mono">
+              {airlines.length.toLocaleString()}
+            </span>{" "}
+            airlines, and{" "}
+            <span className="text-white font-mono">
+              {routes.length.toLocaleString()}
+            </span>{" "}
+            routes.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <button className="bg-orange-500 hover:bg-orange-400 text-black font-bold px-7 py-3.5 rounded-full transition tracking-wide">
+              Explore Airports →
+            </button>
+            <button className="border border-white/20 hover:border-white/60 text-white font-bold px-7 py-3.5 rounded-full transition tracking-wide">
+              Browse Airlines
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="border-y border-white/10 bg-white/[0.02]">
+        <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
+          <Stat label="Airports" value={airports.length.toLocaleString()} />
+          <Stat label="Airlines" value={airlines.length.toLocaleString()} />
+          <Stat label="Routes" value={routes.length.toLocaleString()} />
+          <Stat
+            label="Countries"
+            value={new Set(airports.map((a) => a.country)).size}
+          />
+        </div>
+      </section>
+
+      {/* FEATURED AIRPORTS */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">
+              — TERMINALS
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold">Featured airports</h2>
+          </div>
+          <p className="text-white/40 text-sm hidden md:block">
+            The world's busiest hubs.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featuredAirports.map((a) => (
+            <AirportCard key={a.iata} airport={a} />
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* FEATURED AIRLINES */}
+      <section className="max-w-6xl mx-auto px-6 py-20 border-t border-white/10">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">
+              — CARRIERS
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold">Featured airlines</h2>
+          </div>
+          <p className="text-white/40 text-sm hidden md:block">
+            Iconic carriers worldwide.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featuredAirlines.map((a) => (
+            <AirlineCard key={a.iata} airline={a} />
+          ))}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 py-10 px-6 text-center text-white/40 text-sm">
+        <p className="font-mono tracking-wider">
+          BUILT WITH <span className="text-orange-500">✈</span> BY AN AVGEEK IN
+          TRAINING
+        </p>
+        <p className="mt-2 text-xs">Data: OurAirports & OpenFlights</p>
+      </footer>
+    </main>
+  );
+}
+
+function Stat({ label, value }) {
+  return (
+    <div className="bg-black p-8 text-center md:text-left">
+      <div className="text-4xl md:text-5xl font-bold text-orange-500 mb-2">
+        {value}
+      </div>
+      <div className="text-white/50 text-xs font-mono tracking-widest uppercase">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function AirportCard({ airport }) {
+  return (
+    <div className="group border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer">
+      <div className="flex items-baseline justify-between mb-3">
+        <span className="text-3xl font-bold text-orange-500 font-mono tracking-tight">
+          {airport.iata}
+        </span>
+        <span className="text-xs text-white/30 font-mono">{airport.icao}</span>
+      </div>
+      <div className="font-semibold text-lg mb-1 leading-tight">
+        {airport.name}
+      </div>
+      <div className="text-sm text-white/50">
+        {airport.city}, {airport.country}
+      </div>
+    </div>
+  );
+}
+
+function AirlineCard({ airline }) {
+  return (
+    <div className="group border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer">
+      <div className="flex items-baseline justify-between mb-3">
+        <span className="text-3xl font-bold text-orange-500 font-mono tracking-tight">
+          {airline.iata}
+        </span>
+        <span className="text-xs text-white/30 font-mono">{airline.icao}</span>
+      </div>
+      <div className="font-semibold text-lg mb-1 leading-tight">
+        {airline.name}
+      </div>
+      <div className="text-sm text-white/50">{airline.country}</div>
     </div>
   );
 }
