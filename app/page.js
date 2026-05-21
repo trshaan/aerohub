@@ -1,6 +1,8 @@
 import airports from "./data/airports.json";
 import airlines from "./data/airlines.json";
 import routes from "./data/routes.json";
+import SearchBar from "./components/SearchBar";
+import Link from "next/link";
 
 export default function Home() {
   const featuredAirports = ["JFK", "LHR", "DXB", "HND", "SIN", "LAX"]
@@ -26,7 +28,6 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative overflow-hidden">
-        {/* Subtle orange glow in the corner */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 md:py-32">
@@ -55,13 +56,8 @@ export default function Home() {
             </span>{" "}
             routes.
           </p>
-          <div className="flex gap-4 flex-wrap">
-            <button className="bg-orange-500 hover:bg-orange-400 text-black font-bold px-7 py-3.5 rounded-full transition tracking-wide">
-              Explore Airports →
-            </button>
-            <button className="border border-white/20 hover:border-white/60 text-white font-bold px-7 py-3.5 rounded-full transition tracking-wide">
-              Browse Airlines
-            </button>
+          <div className="mt-2">
+            <SearchBar />
           </div>
         </div>
       </section>
@@ -146,7 +142,10 @@ function Stat({ label, value }) {
 
 function AirportCard({ airport }) {
   return (
-    <div className="group border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer">
+    <Link
+      href={`/airport/${airport.iata}`}
+      className="group block border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer"
+    >
       <div className="flex items-baseline justify-between mb-3">
         <span className="text-3xl font-bold text-orange-500 font-mono tracking-tight">
           {airport.iata}
@@ -159,13 +158,16 @@ function AirportCard({ airport }) {
       <div className="text-sm text-white/50">
         {airport.city}, {airport.country}
       </div>
-    </div>
+    </Link>
   );
 }
 
 function AirlineCard({ airline }) {
   return (
-    <div className="group border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer">
+    <Link
+      href={`/airline/${airline.iata}`}
+      className="group block border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-orange-500/50 hover:bg-orange-500/[0.03] transition cursor-pointer"
+    >
       <div className="flex items-baseline justify-between mb-3">
         <span className="text-3xl font-bold text-orange-500 font-mono tracking-tight">
           {airline.iata}
@@ -176,6 +178,6 @@ function AirlineCard({ airline }) {
         {airline.name}
       </div>
       <div className="text-sm text-white/50">{airline.country}</div>
-    </div>
+    </Link>
   );
 }
