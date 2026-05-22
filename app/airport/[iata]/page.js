@@ -4,12 +4,6 @@ import routes from "../../data/routes.json";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// Tell Next.js: "Pre-build a page for every airport at build time."
-// This makes the site blazing fast — no server thinking needed at runtime.
-export function generateStaticParams() {
-  return airports.map((a) => ({ iata: a.iata }));
-}
-
 export default async function AirportPage({ params }) {
   const { iata } = await params;
   const airport = airports.find((a) => a.iata === iata.toUpperCase());
@@ -18,10 +12,8 @@ export default async function AirportPage({ params }) {
     notFound();
   }
 
-  // Find all routes departing from this airport
   const departingRoutes = routes.filter((r) => r.from === airport.iata);
 
-  // Get unique destination airports (top 8)
   const destinationCodes = [
     ...new Set(departingRoutes.map((r) => r.to)),
   ].slice(0, 8);
@@ -29,7 +21,6 @@ export default async function AirportPage({ params }) {
     .map((code) => airports.find((a) => a.iata === code))
     .filter(Boolean);
 
-  // Get unique airlines operating from this airport (top 8)
   const operatingAirlineCodes = [
     ...new Set(departingRoutes.map((r) => r.airline)),
   ].slice(0, 8);
@@ -39,21 +30,16 @@ export default async function AirportPage({ params }) {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* TOP BAR */}
       <nav className="border-b border-white/10 px-6 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
           <span className="text-orange-500 text-2xl">✈</span>
           <span className="font-bold tracking-widest text-lg">AEROHUB</span>
         </Link>
-        <Link
-          href="/"
-          className="text-xs font-mono text-white/40 tracking-wider hover:text-orange-500 transition"
-        >
+        <Link href="/" className="text-xs font-mono text-white/40 tracking-wider hover:text-orange-500 transition">
           ← BACK TO HUB
         </Link>
       </nav>
 
-      {/* HERO */}
       <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
@@ -75,20 +61,15 @@ export default async function AirportPage({ params }) {
         </div>
       </section>
 
-      {/* KEY FACTS */}
       <section className="border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
           <Fact label="Latitude" value={airport.lat.toFixed(4)} />
           <Fact label="Longitude" value={airport.lon.toFixed(4)} />
-          <Fact
-            label="Elevation"
-            value={airport.elevation ? `${airport.elevation} ft` : "—"}
-          />
+          <Fact label="Elevation" value={airport.elevation ? `${airport.elevation} ft` : "—"} />
           <Fact label="Type" value={airport.type.replace("_", " ")} />
         </div>
       </section>
 
-      {/* MAP LINK */}
       <section className="max-w-6xl mx-auto px-6 py-12 border-b border-white/10">
         <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">
           — LOCATION
@@ -114,7 +95,6 @@ export default async function AirportPage({ params }) {
         )}
       </section>
 
-      {/* AIRLINES OPERATING HERE */}
       {operatingAirlines.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 py-16 border-b border-white/10">
           <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">
@@ -140,7 +120,6 @@ export default async function AirportPage({ params }) {
         </section>
       )}
 
-      {/* TOP DESTINATIONS */}
       {destinations.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 py-16">
           <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">
