@@ -3,6 +3,7 @@ import airlines from "../../data/airlines.json";
 import routes from "../../data/routes.json";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import FavoriteButton from "../../components/FavoriteButton";
 
 export default async function AirportPage({ params }) {
   const { iata } = await params;
@@ -66,6 +67,7 @@ export default async function AirportPage({ params }) {
         <p className="text-orange-500 text-sm font-mono tracking-[0.3em] mb-3">LOCATION</p>
         <h3 className="text-2xl font-bold mb-4">On the map</h3>
         <a href={`https://www.google.com/maps?q=${airport.lat},${airport.lon}`} target="_blank" rel="noopener noreferrer" className="inline-block bg-orange-500 hover:bg-orange-400 text-black font-bold px-6 py-3 rounded-full transition">Open in Google Maps</a>
+        <FavoriteButton airport={airport} />
       </section>
 
       {operatingAirlines.length > 0 && (
